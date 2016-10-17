@@ -5,6 +5,9 @@ import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 
+import domain.HardDisk;
+import utils.Utils;
+
 
 
 public class HDService {
@@ -18,11 +21,13 @@ public class HDService {
 		return fileSystem;
 	}
 
-	private String retornarEspacoDiscoTotal() {
-		String retorno = null;
+
+	private Long retornarEspacoDiscoLivre() {
+		Long retorno = null;
 		for (FileStore fs : getFileSystem().getFileStores()) {
 			try {
-				retorno = String.valueOf(fs.getTotalSpace());
+				retorno = fs.getUsableSpace();
+				break;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -30,23 +35,12 @@ public class HDService {
 		return retorno;
 	}
 
-	private String retornarEspacoDiscoLivre() {
-		String retorno = null;
+	private Long retornarEspacoDiscoEmUso() {
+		Long retorno = null;
 		for (FileStore fs : getFileSystem().getFileStores()) {
 			try {
-				retorno = String.valueOf((fs.getTotalSpace() - fs.getUsableSpace()));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return retorno;
-	}
-
-	private String retornarEspacoDiscoEmUso() {
-		String retorno = null;
-		for (FileStore fs : getFileSystem().getFileStores()) {
-			try {
-				retorno = String.valueOf(fs.getUsableSpace());
+				retorno = fs.getTotalSpace() - fs.getUsableSpace();
+				break;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -54,17 +48,11 @@ public class HDService {
 		return retorno;
 	}
 	
-	public String retornaTodosOsDados(){
-		StringBuffer sb = new StringBuffer();
-		sb.append("Total: ");
-		sb.append(retornarEspacoDiscoTotal());
-		sb.append(",");
-		sb.append("Livre: ");
-		sb.append(retornarEspacoDiscoLivre());
-		sb.append(",");
-		sb.append("Em Uso: ");
-		sb.append(retornarEspacoDiscoEmUso());
-		return sb.toString();
+	public HardDisk retornaTodosOsDados(){
+		HardDisk hd = new HardDisk();
+		hd.setEspacoLivre(Utils.readableFileSize(retornarEspacoDiscoLivre()));
+		hd.setEspacoEmUso(Utils.readableFileSize(retornarEspacoDiscoEmUso()));
+		return hd;
 		
 	}
 }
