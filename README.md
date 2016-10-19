@@ -14,4 +14,6 @@ http://sparkjava.com/
 
 5- Dependências instaladas via Maven, vide dependecy no POM.
 
+6- Executar o serve side primeiro.
+
 
