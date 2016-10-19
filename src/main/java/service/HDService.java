@@ -23,11 +23,10 @@ public class HDService {
 
 
 	private Long retornarEspacoDiscoLivre() {
-		Long retorno = null;
+		Long retorno = 0L;
 		for (FileStore fs : getFileSystem().getFileStores()) {
 			try {
-				retorno = fs.getUsableSpace();
-				break;
+				retorno = retorno + fs.getUsableSpace() ;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -36,11 +35,13 @@ public class HDService {
 	}
 
 	private Long retornarEspacoDiscoEmUso() {
-		Long retorno = null;
+		Long retorno = 0L;
+		Long total = 0L;
 		for (FileStore fs : getFileSystem().getFileStores()) {
 			try {
-				retorno = fs.getTotalSpace() - fs.getUsableSpace();
-				break;
+				total = total + fs.getTotalSpace();
+				
+				retorno = total - retornarEspacoDiscoLivre();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
