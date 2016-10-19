@@ -10,7 +10,7 @@ https://support.hyperic.com/display/SIGAR/Home
 3- Usei o Spark Java pra trabalhar com as requisições (server side).
 http://sparkjava.com/
 
-4- Por padrão usei localhost
+4- Por padrão estou usando http://localhost:4567
 
 5- Dependências instaladas via Maven, vide dependecy no POM.
 
